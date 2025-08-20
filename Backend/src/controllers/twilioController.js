@@ -14,16 +14,14 @@ const cadastrarNumero = async (req, res) => {
   }
 
   try {
-    // 1. Envio do SMS de verificação usando o Messaging Service
     const verification = await twilioClient.verify.v2
       .services(verifySid)
       .verifications.create({
         to: `+${numero}`,
         channel: "sms",
-        messagingServiceSid: messagingServiceSid, // Usando seu Messaging Service
+        messagingServiceSid: messagingServiceSid,
       });
 
-    // 2. Criação do fluxo no Studio (opcional)
     let flow;
     try {
       flow = await twilioClient.studio.v2.flows.create({
@@ -48,7 +46,6 @@ const cadastrarNumero = async (req, res) => {
       });
     } catch (studioError) {
       console.error("Erro no Studio:", studioError);
-      // Continua mesmo com erro no Studio
     }
 
     return res.json({
